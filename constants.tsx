@@ -12,11 +12,11 @@ export const lessons: Lesson[] = [
   { id: 1, title: "01: Classification & Diagnosis", active: true, complete: true },
   { id: 2, title: "02: Biological Explanations", active: true, complete: true },
   { id: 3, title: "03: Psychological Explanations", active: true, complete: true },
-  { id: 4, title: "04: Drug Therapies", active: true, complete: false },
+  { id: 4, title: "04: Drug Therapies", active: true, complete: true },
   { id: 5, title: "05: Psychological Therapies", active: false },
   { id: 6, title: "06: Management (Token Economies)", active: false },
   { id: 7, title: "07: Interactionist Approach", active: false },
-  { id: 8, title: "08: Review & Synthesis", active: false },
+  { id: 8, title: "08: Review & Synthesis (Exam)", active: true },
 ];
 
 export const lesson1DoNow: Question[] = [ 
@@ -66,3 +66,29 @@ export const diagnosisCards: CardData[] = [
     { title: "Gender Bias", icon: Users, color: "text-blue-400", borderColor: "border-blue-500", bgColor: "bg-blue-900/10", content: <div className="space-y-4"><p className="text-gray-300">Men are diagnosed more often than women (1.4:1 ratio).</p><div className="bg-black/30 p-4 rounded-lg border-l-4 border-blue-500"><strong className="text-blue-300 block mb-2">Cotton et al. (2009)</strong><p className="text-gray-400 text-sm">Female patients function better (work/family). This <span className="text-white font-bold">masks symptoms</span>, leading to under-diagnosis.</p></div><p className="text-gray-300 font-bold bg-gray-800 p-3 rounded">Impact: Poor validity.</p></div> },
     { title: "Cultural Bias", icon: Users, color: "text-purple-400", borderColor: "border-purple-500", bgColor: "bg-purple-900/10", content: <div className="space-y-4"><p className="text-gray-300">African Americans are more likely to be diagnosed.</p><div className="bg-black/30 p-4 rounded-lg border-l-4 border-purple-500"><strong className="text-purple-300 block mb-2">Escobar (2012)</strong><p className="text-gray-400 text-sm">Hearing voices (ancestors) is culturally acceptable in some groups. White psychiatrists may view this as irrational (Ethnocentrism).</p></div><p className="text-gray-300 font-bold bg-gray-800 p-3 rounded">Impact: Cultural bias in diagnosis.</p></div> }
 ];
+
+export const questionBank = {
+  6: [
+    "Outline the role of the dopamine hypothesis in schizophrenia. (6 marks)",
+    "Explain one biological explanation for schizophrenia, other than the dopamine hypothesis. (6 marks)",
+    "Briefly outline how cognitive dysfunction is used to explain schizophrenia. (6 marks)",
+    "Explain the difference between positive and negative symptoms of schizophrenia. (6 marks)",
+    "Outline the use of typical antipsychotics in treating schizophrenia. (6 marks)"
+  ],
+  8: [
+    "Jack has been diagnosed with schizophrenia. His family life is tense, and his mother is often critical of his lack of motivation. Discuss family dysfunction as an explanation for schizophrenia. Refer to Jack in your answer. (8 marks)",
+    "Research has suggested that schizophrenia may be genetic. Discuss genetic explanations for schizophrenia. (8 marks)",
+    "Evaluate the use of drug therapy for treating schizophrenia. (8 marks)",
+    "Discuss issues regarding the reliability and validity of the diagnosis of schizophrenia. (8 marks)"
+  ],
+  16: [
+    "Discuss biological explanations for schizophrenia. (16 marks)",
+    "Discuss psychological explanations for schizophrenia. (16 marks)",
+    "Discuss drug therapy as a treatment for schizophrenia. (16 marks)",
+    "Discuss issues and debates related to the classification and diagnosis of schizophrenia. (16 marks)",
+    "Discuss the interactionist approach to explaining schizophrenia. (16 marks)",
+    "Ben is experiencing auditory hallucinations and believes his neighbours are spying on him. His father also suffered from mental health issues. Discuss biological explanations for schizophrenia. Refer to Ben in your answer. (16 marks)",
+    "Louise has been prescribed Chlorpromazine for her schizophrenia but is complaining of muscle tremors. Discuss drug therapy for schizophrenia. Refer to Louise in your answer. (16 marks)",
+    "A psychiatrist is assessing two patients. One presents with avolition, the other with delusions. Discuss reliability and validity in the diagnosis and classification of schizophrenia. Refer to this scenario in your answer. (16 marks)"
+  ]
+};

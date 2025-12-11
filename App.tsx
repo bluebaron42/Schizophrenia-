@@ -39,6 +39,7 @@ import EssayPlanRevealL3 from './components/EssayPlanRevealL3';
 import DrugMoleculeSim from './components/DrugMoleculeSim';
 import SideEffectsDeckWrapper from './components/SideEffectsDeckWrapper';
 import EssayPlanRevealL4 from './components/EssayPlanRevealL4';
+import ExamSimulator from './components/ExamSimulator';
 import { lessons, lesson1DoNow, lesson2DoNow, lesson3DoNow, lesson4DoNow, diagnosisCards } from './constants';
 
 export default function App() {
@@ -235,38 +236,13 @@ export default function App() {
   return (
     <div className="flex h-screen bg-gray-900 text-gray-100 font-sans overflow-hidden selection:bg-purple-500 selection:text-white">
       {/* Sidebar */}
-      <div className={`${isSidebarOpen ? 'w-80' : 'w-0'} bg-gray-950 border-r border-gray-800 transition-all duration-300 flex flex-col z-20 shadow-2xl relative overflow-hidden`}>
-        <div className="p-6 border-b border-gray-800 flex justify-between items-center">
-          <span className="font-black text-xl text-purple-500 tracking-tighter">SCHIZO<span className="text-white">PHRENIA</span></span>
-          <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-white"><X size={20}/></button>
-        </div>
-        <div className="flex-grow overflow-y-auto py-4">
-          {lessons.map((lesson) => (
-            <button key={lesson.id} onClick={() => { setCurrentLesson(lesson.id); setCurrentSlide(0); }} className={`w-full text-left px-6 py-4 border-l-4 transition-all ${currentLesson === lesson.id ? 'border-purple-500 bg-purple-900/10 text-white shadow-[inset_10px_0_20px_-10px_rgba(168,85,247,0.2)]' : 'border-transparent text-gray-500 hover:bg-gray-900 hover:text-gray-300'} ${!lesson.active && !lesson.complete ? 'opacity-40 cursor-not-allowed' : ''}`}>
-              <div className="flex items-center justify-between">
-                <span className="font-bold text-sm tracking-tight">{lesson.title}</span>
-                {currentLesson === lesson.id && <div className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,1)]"></div>}
-                {lesson.complete && currentLesson !== lesson.id && <CheckCircle size={14} className="text-green-500"/>}
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Main Content */}
+      <div className={`${isSidebarOpen ? 'w-80' : 'w-0'} bg-gray-950 border-r border-gray-800 transition-all duration-300 flex flex-col z-20 shadow-2xl relative overflow-hidden`}><div className="p-6 border-b border-gray-800 flex justify-between items-center"><span className="font-black text-xl text-purple-500 tracking-tighter">SCHIZO<span className="text-white">PHRENIA</span></span><button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-white"><X size={20}/></button></div><div className="flex-grow overflow-y-auto py-4">{lessons.map((lesson) => (<button key={lesson.id} onClick={() => { setCurrentLesson(lesson.id); setCurrentSlide(0); }} className={`w-full text-left px-6 py-4 border-l-4 transition-all ${currentLesson === lesson.id ? 'border-purple-500 bg-purple-900/10 text-white shadow-[inset_10px_0_20px_-10px_rgba(168,85,247,0.2)]' : 'border-transparent text-gray-500 hover:bg-gray-900 hover:text-gray-300'} ${!lesson.active && !lesson.complete ? 'opacity-40 cursor-not-allowed' : ''}`}><div className="flex items-center justify-between"><span className="font-bold text-sm tracking-tight">{lesson.title}</span>{currentLesson === lesson.id && <div className="w-2 h-2 rounded-full bg-purple-500 shadow-[0_0_10px_rgba(168,85,247,1)]"></div>}{lesson.complete && currentLesson !== lesson.id && <CheckCircle size={14} className="text-green-500"/>}</div></button>))}</div></div>
       <div className="flex-grow flex flex-col h-full relative bg-[#0a0a0a]">
-        
-        {/* Mobile Toggle & Maximize */}
-        <div className="absolute top-4 left-4 z-50 flex gap-2">
-           {!isSidebarOpen && <button onClick={() => setSidebarOpen(true)} className="bg-gray-800 p-2 rounded text-white hover:bg-gray-700 shadow-lg border border-gray-700"><Menu size={20} /></button>}
-        </div>
-        
-        {/* Top Right Maximize Control & Presentation Mode */}
-        <div className="absolute top-4 right-4 z-50 flex gap-2">
-           <button onClick={togglePresentation} className={`p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700/50 backdrop-blur-sm transition-all ${isPresentation ? 'bg-purple-600 text-white border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]' : 'bg-gray-800/80'}`} title="Presentation Mode"><Projector size={20} /></button><button onClick={() => setSidebarOpen(!isSidebarOpen)} className="bg-gray-800/80 p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700/50 backdrop-blur-sm transition-all" title={isSidebarOpen ? "Maximize Content" : "Show Sidebar"}>{isSidebarOpen ? <Maximize2 size={20} /> : <Minimize2 size={20} />}</button></div>
+        <div className="absolute top-4 left-4 z-50 flex gap-2">{!isSidebarOpen && <button onClick={() => setSidebarOpen(true)} className="bg-gray-800 p-2 rounded text-white hover:bg-gray-700 shadow-lg border border-gray-700"><Menu size={20} /></button>}</div>
+        <div className="absolute top-4 right-4 z-50 flex gap-2"><button onClick={togglePresentation} className={`p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700/50 backdrop-blur-sm transition-all ${isPresentation ? 'bg-purple-600 text-white border-purple-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]' : 'bg-gray-800/80'}`} title="Presentation Mode"><Projector size={20} /></button><button onClick={() => setSidebarOpen(!isSidebarOpen)} className="bg-gray-800/80 p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-700 border border-gray-700/50 backdrop-blur-sm transition-all" title={isSidebarOpen ? "Maximize Content" : "Show Sidebar"}>{isSidebarOpen ? <Maximize2 size={20} /> : <Minimize2 size={20} />}</button></div>
         <div className="h-1 bg-gray-900 w-full"><div className="h-full bg-gradient-to-r from-purple-800 to-purple-500 transition-all duration-500 shadow-[0_0_15px_rgba(168,85,247,0.5)]" style={{ width: `${((currentSlide + 1) / slideCount) * 100}%` }} /></div>
-        <main className="flex-grow relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#050505] to-black">{currentLesson === 1 ? renderLesson1() : currentLesson === 2 ? renderLesson2() : currentLesson === 3 ? renderLesson3() : renderLesson4()}</main>
-        <div className="h-20 border-t border-gray-800 bg-black/50 backdrop-blur-sm flex items-center justify-between px-8 z-10"><button onClick={prevSlide} disabled={currentSlide === 0} className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all ${currentSlide === 0 ? 'text-gray-700 cursor-not-allowed' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}><ChevronLeft size={16} /> PREV</button><span className="text-gray-600 font-mono text-xs tracking-widest">{currentSlide + 1} / {slideCount}</span><button onClick={nextSlide} disabled={currentSlide === slideCount - 1} className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all ${currentSlide === slideCount - 1 ? 'text-gray-700 cursor-not-allowed' : 'bg-purple-600 text-white hover:bg-purple-500 shadow-lg hover:shadow-purple-500/20'}`}>NEXT <ChevronRight size={16} /></button></div>
+        <main className="flex-grow relative overflow-hidden bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#050505] to-black">{currentLesson === 1 ? renderLesson1() : currentLesson === 2 ? renderLesson2() : currentLesson === 3 ? renderLesson3() : currentLesson === 4 ? renderLesson4() : currentLesson === 8 ? <ExamSimulator isPresentation={isPresentation} /> : null}</main>
+        {currentLesson !== 8 && <div className="h-20 border-t border-gray-800 bg-black/50 backdrop-blur-sm flex items-center justify-between px-8 z-10"><button onClick={prevSlide} disabled={currentSlide === 0} className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all ${currentSlide === 0 ? 'text-gray-700 cursor-not-allowed' : 'text-gray-400 hover:text-white hover:bg-gray-800'}`}><ChevronLeft size={16} /> PREV</button><span className="text-gray-600 font-mono text-xs tracking-widest">{currentSlide + 1} / {slideCount}</span><button onClick={nextSlide} disabled={currentSlide === slideCount - 1} className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold text-sm transition-all ${currentSlide === slideCount - 1 ? 'text-gray-700 cursor-not-allowed' : 'bg-purple-600 text-white hover:bg-purple-500 shadow-lg hover:shadow-purple-500/20'}`}>NEXT <ChevronRight size={16} /></button></div>}
       </div>
     </div>
   );
