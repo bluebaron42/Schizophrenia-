@@ -66,10 +66,11 @@ const ExamSimulator: React.FC<ExamSimulatorProps> = ({ isPresentation }) => {
         - If the score is 70% or higher, "modelAnswer" should be null.
 
         Output Format:
-        Return ONLY valid JSON with this structure. Do not include markdown formatting like \`\`\`json.
+        Return ONLY valid MINIFIED JSON (no markdown formatting, no unescaped control characters).
+        The "feedback" field should be an ARRAY of strings to avoid newline issues.
         {
           "score": number,
-          "feedback": "string (bullet points for strengths and weaknesses, specifically citing missing terminology)",
+          "feedback": string[], 
           "modelAnswer": "string (or null)"
         }
       `;
@@ -85,8 +86,7 @@ const ExamSimulator: React.FC<ExamSimulatorProps> = ({ isPresentation }) => {
       const resultText = response.text;
       
       if (resultText) {
-        // Robust JSON extraction: Find the first '{' and the last '}'
-        // This prevents crashes if the AI adds conversational text before/after the JSON
+        // Robust JSON extraction
         const jsonMatch = resultText.match(/\{[\s\S]*\}/);
         
         if (jsonMatch) {
@@ -94,21 +94,20 @@ const ExamSimulator: React.FC<ExamSimulatorProps> = ({ isPresentation }) => {
             try {
                 const parsed = JSON.parse(jsonString);
                 
-                // Sanitize feedback: ensure it is a string to prevent React Error #31
+                // Sanitize feedback: ensure it is a string for display
                 let feedbackString = "";
-                if (typeof parsed.feedback === 'string') {
+                
+                if (Array.isArray(parsed.feedback)) {
+                     // Best case: it followed instructions
+                     feedbackString = parsed.feedback.map((item: any) => `- ${typeof item === 'string' ? item : JSON.stringify(item)}`).join('\n\n');
+                } else if (typeof parsed.feedback === 'string') {
                     feedbackString = parsed.feedback;
                 } else if (typeof parsed.feedback === 'object' && parsed.feedback !== null) {
-                    // Handle cases where AI ignores prompt and returns an object (e.g., { strengths: ..., weaknesses: ... })
-                    if (Array.isArray(parsed.feedback)) {
-                         feedbackString = parsed.feedback.map((item: any) => `- ${typeof item === 'string' ? item : JSON.stringify(item)}`).join('\n');
-                    } else {
-                        // Iterate through keys like 'strengths', 'weaknesses', 'improvements'
-                        Object.entries(parsed.feedback).forEach(([key, value]) => {
-                             const valStr = typeof value === 'string' ? value : JSON.stringify(value);
-                             feedbackString += `**${key.toUpperCase()}**:\n${valStr}\n\n`;
-                        });
-                    }
+                    // Handle cases where AI returns an object (e.g., { strengths: ..., weaknesses: ... })
+                    Object.entries(parsed.feedback).forEach(([key, value]) => {
+                         const valStr = Array.isArray(value) ? value.join(', ') : (typeof value === 'string' ? value : JSON.stringify(value));
+                         feedbackString += `**${key.toUpperCase()}**:\n${valStr}\n\n`;
+                    });
                 } else {
                     feedbackString = "No text feedback provided.";
                 }
@@ -121,7 +120,20 @@ const ExamSimulator: React.FC<ExamSimulatorProps> = ({ isPresentation }) => {
                 });
             } catch (parseError) {
                 console.error("JSON Parse Error:", parseError);
-                setError("Error parsing examiner response. Please try again.");
+                // Fallback: Try to strip control characters and parse again if it was a simple newline issue
+                try {
+                     const sanitized = jsonString.replace(/[\x00-\x1F\x7F-\x9F]/g, "");
+                     const parsedRetry = JSON.parse(sanitized);
+                     // If retry works, we need to repeat the extraction logic, but let's just dump the raw text if complex
+                     setAiResponse({
+                        score: parsedRetry.score || 0,
+                        maxScore: selectedMark!,
+                        feedback: Array.isArray(parsedRetry.feedback) ? parsedRetry.feedback.join('\n') : (parsedRetry.feedback || "Error parsing feedback text."),
+                        modelAnswer: parsedRetry.modelAnswer
+                     });
+                } catch (retryError) {
+                     setError("Examiner system error (JSON Format). Please try submitting again.");
+                }
             }
         } else {
             console.error("No JSON found in response:", resultText);

@@ -13,9 +13,9 @@ export const lessons: Lesson[] = [
   { id: 2, title: "02: Biological Explanations", active: true, complete: true },
   { id: 3, title: "03: Psychological Explanations", active: true, complete: true },
   { id: 4, title: "04: Drug Therapies", active: true, complete: true },
-  { id: 5, title: "05: Psychological Therapies", active: false },
-  { id: 6, title: "06: Management (Token Economies)", active: false },
-  { id: 7, title: "07: Interactionist Approach", active: false },
+  { id: 5, title: "05: Psychological Therapies", active: true },
+  { id: 6, title: "06: Management (Token Economies)", active: true },
+  { id: 7, title: "07: Interactionist Approach", active: true },
   { id: 8, title: "08: Review & Synthesis (Exam)", active: true },
 ];
 
@@ -51,6 +51,30 @@ export const lesson4DoNow: Question[] = [
   { id: 5, question: "General: What is a placebo?", options: ["A strong drug", "An inert substance with no physical effect", "A type of therapy"], correct: 1 }
 ];
 
+export const lesson5DoNow: Question[] = [
+  { id: 1, question: "Year 1 Approaches: Which therapy is based on the idea that 'thoughts determine feelings'?", options: ["Psychoanalysis", "CBT", "Systematic Desensitisation"], correct: 1 },
+  { id: 2, question: "Lesson 3 Recap: Which family dynamic is a major trigger for relapse?", options: ["Double Bind", "High Expressed Emotion (EE)", "Schizophrenogenic Mother"], correct: 1 },
+  { id: 3, question: "Lesson 3 Recap: What is 'Metarepresentation'?", options: ["The ability to reflect on one's own thoughts", "The ability to suppress automatic responses", "A type of hallucination"], correct: 0 },
+  { id: 4, question: "Lesson 4 Recap: Do antipsychotic drugs cure schizophrenia?", options: ["Yes, they remove the root cause", "No, they manage symptoms (palliative)", "Yes, but only Atypicals"], correct: 1 },
+  { id: 5, question: "General: What does 'NICE' stand for in UK healthcare?", options: ["National Institute for Health and Care Excellence", "National Initiative for Clinical Evaluation", "New International Care Experiments"], correct: 0 }
+];
+
+export const lesson6DoNow: Question[] = [
+  { id: 1, question: "Year 1 Approaches: Which approach assumes all behaviour is learned?", options: ["Cognitive", "Behaviourist", "Biological"], correct: 1 },
+  { id: 2, question: "Year 1 Recap: What is 'Operant Conditioning'?", options: ["Learning by association", "Learning by consequence", "Learning by observation"], correct: 1 },
+  { id: 3, question: "Year 1 Recap: What is a 'Secondary Reinforcer'?", options: ["Something innately satisfying (e.g. Food)", "Something that has no value until associated with a primary reinforcer", "A punishment"], correct: 1 },
+  { id: 4, question: "Lesson 5 Recap: Does Family Therapy cure schizophrenia?", options: ["Yes", "No, it manages relapse", "Only if combined with CBT"], correct: 1 },
+  { id: 5, question: "General: What is 'Institutionalisation'?", options: ["A legal process", "Developing habits from living in a hospital for a long time", "A type of drug"], correct: 1 }
+];
+
+export const lesson7DoNow: Question[] = [
+  { id: 1, question: "Year 1 Debates: What is the 'Nature' side of the debate?", options: ["Behaviour is learned from the environment", "Behaviour is innate/biological", "Behaviour is a choice"], correct: 1 },
+  { id: 2, question: "Year 1 Debates: What is the 'Nurture' side?", options: ["Behaviour is shaped by experience/environment", "Behaviour is genetic", "Behaviour is random"], correct: 0 },
+  { id: 3, question: "Lesson 2 Recap: According to Ripke, is Schizophrenia caused by one gene?", options: ["Yes, the Schizogene", "No, it is Polygenic (108 loci)", "No, it is caused by Dopamine only"], correct: 1 },
+  { id: 4, question: "Lesson 3 Recap: What is a 'Schizophrenogenic Mother'?", options: ["A loving parent", "A cold, rejecting parent causing stress", "A genetic mutation"], correct: 1 },
+  { id: 5, question: "General: What does 'Interactionist' imply?", options: ["Biology and Environment work together", "Only Biology matters", "Only Environment matters"], correct: 0 }
+];
+
 export const patientFiles: Patient[] = [
   { id: "David", age: 24, vignette: "David has not left his parents' home in six weeks. His mother reports that he has stopped washing his clothes and rarely showers, appearing unkempt with matted hair (Avolition: Hygiene). He spends most days sitting in his room staring at the wall for hours, showing no motivation to find work or engage in hobbies (Avolition: Lack of Energy). When his mother asks him questions, he responds with one-word answers or silence, often taking a long time to reply (Speech Poverty). He denies hearing voices or having any special powers.", obs: ["Severe Avolition (Hygiene & Energy)", "Speech Poverty (Alogia)", "No Hallucinations", "No Delusions"], dsm: false, icd: true, feedback: "David exhibits two clear Negative Symptoms (Avolition & Speech Poverty) but NO Positive Symptoms. Therefore, he meets the criteria for ICD-10 (2+ Negative) but NOT DSM-5 (Requires 1+ Positive)." },
   { id: "Sarah", age: 31, vignette: "Sarah was brought in by police after attempting to enter Buckingham Palace. She claims she is a 'secret liaison' to the King and has been sent to deliver a coded warning about an alien invasion (Delusions of Grandeur & Persecution). She appears highly agitated and frequently glances at the corner of the room, shouting 'Be quiet!' at empty space (Auditory/Visual Hallucinations). She is articulate and well-dressed.", obs: ["Delusions (Grandeur & Persecution)", "Hallucinations (Auditory/Visual)", "No Negative Symptoms reported"], dsm: true, icd: true, feedback: "Sarah exhibits multiple Positive Symptoms (Delusions & Hallucinations). Both classification systems recognise these as sufficient for a diagnosis of Schizophrenia." },
@@ -79,7 +103,8 @@ export const questionBank = {
     "Jack has been diagnosed with schizophrenia. His family life is tense, and his mother is often critical of his lack of motivation. Discuss family dysfunction as an explanation for schizophrenia. Refer to Jack in your answer. (8 marks)",
     "Research has suggested that schizophrenia may be genetic. Discuss genetic explanations for schizophrenia. (8 marks)",
     "Evaluate the use of drug therapy for treating schizophrenia. (8 marks)",
-    "Discuss issues regarding the reliability and validity of the diagnosis of schizophrenia. (8 marks)"
+    "Discuss issues regarding the reliability and validity of the diagnosis of schizophrenia. (8 marks)",
+    "Explain how the interactionist approach would explain Jack's condition. (8 marks)"
   ],
   16: [
     "Discuss biological explanations for schizophrenia. (16 marks)",
