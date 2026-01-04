@@ -21,6 +21,77 @@ jobs:
       - name: Install dependencies
         run: npm install
       
+      - name: Fix JSX syntax issues
+        run: |
+          echo "🔧 Fixing JSX syntax in .tsx and .jsx files..."
+          
+          # Create the fix_jsx.py script inline
+          cat > /tmp/fix_jsx.py << 'PYTHON_SCRIPT'
+          #!/usr/bin/env python3
+          import sys
+          import re
+          
+          if len(sys.argv) < 2:
+              print("Usage: fix_jsx.py <file>")
+              sys.exit(1)
+          
+          filepath = sys.argv[1]
+          
+          with open(filepath, 'r', encoding='utf-8') as f:
+              content = f.read()
+          
+          # Track fixes for reporting
+          fixes_made = []
+          
+          # Fix HTML entities
+          original = content
+          content = re.sub(r'&lt;', '{"<"}', content)
+          content = re.sub(r'&gt;', '{">"}', content)
+          content = re.sub(r'&amp;', '{"&"}', content)
+          if content != original:
+              fixes_made.append("HTML entities")
+          
+          # Fix > at start of line/text
+          original = content
+          content = re.sub(r'(\s+|^)>\s+([A-Z_])', r'\1{">"} \2', content, flags=re.MULTILINE)
+          if content != original:
+              fixes_made.append("Angle brackets at line start")
+          
+          # Fix >> at start of text
+          original = content
+          content = re.sub(r'(>)>>\s+', r'\1{">>"} ', content)
+          if content != original:
+              fixes_made.append("Double angle brackets")
+          
+          # Fix -> surrounded by spaces
+          original = content
+          content = re.sub(r'(\s)->(\s)', r'\1{"->"}\2', content)
+          if content != original:
+              fixes_made.append("Arrow operators")
+          
+          # Fix comparison operators in parentheses
+          original = content
+          content = re.sub(r'\(\s*<\s*(\d+)', r'({"<"}\1', content)
+          content = re.sub(r'\(\s*>\s*(\d+)', r'({">"}\1', content)
+          if content != original:
+              fixes_made.append("Comparison operators")
+          
+          with open(filepath, 'w', encoding='utf-8') as f:
+              f.write(content)
+          
+          if fixes_made:
+              print(f"✅ Fixed: {', '.join(fixes_made)}")
+          PYTHON_SCRIPT
+          
+          # Make it executable and run on all TSX/JSX files
+          chmod +x /tmp/fix_jsx.py
+          find . -name "*.tsx" -o -name "*.jsx" | while read file; do
+            echo "  Checking: $file"
+            python3 /tmp/fix_jsx.py "$file"
+          done
+          
+          echo "✅ JSX syntax check complete"
+      
       - name: Build module
         run: npm run build
       
