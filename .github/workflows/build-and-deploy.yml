@@ -43,7 +43,7 @@ jobs:
           # Track fixes for reporting
           fixes_made = []
           
-          # Fix HTML entities
+          # Fix HTML entities first
           original = content
           content = re.sub(r'&lt;', '{"<"}', content)
           content = re.sub(r'&gt;', '{">"}', content)
@@ -51,7 +51,7 @@ jobs:
           if content != original:
               fixes_made.append("HTML entities")
           
-          # Fix > at start of line/text
+          # Fix > at start of line/text (terminal-style output)
           original = content
           content = re.sub(r'(\s+|^)>\s+([A-Z_])', r'\1{">"} \2', content, flags=re.MULTILINE)
           if content != original:
@@ -63,18 +63,51 @@ jobs:
           if content != original:
               fixes_made.append("Double angle brackets")
           
-          # Fix -> surrounded by spaces
+          # COMPREHENSIVE arrow operator fix (->)
           original = content
-          content = re.sub(r'(\s)->(\s)', r'\1{"->"}\2', content)
+          # Pattern 1: -> with spaces on both sides
+          content = re.sub(r'(\s)->(\s)', r'\1 → \2', content)
+          # Pattern 2: -> at end of word/text
+          content = re.sub(r'([a-zA-Z])->([a-zA-Z\s])', r'\1 → \2', content)
+          # Pattern 3: -> in quotes/strings within JSX
+          content = re.sub(r'"([^"]*)->([^"]*)"', lambda m: f'"{m.group(1)} → {m.group(2)}"', content)
+          # Pattern 4: Catch any remaining -> in text content
+          content = re.sub(r'([^=<>!])->([^=<>])', r'\1 → \2', content)
           if content != original:
-              fixes_made.append("Arrow operators")
+              fixes_made.append("Arrow operators (→)")
           
-          # Fix comparison operators in parentheses
+          # Fix comparison operators in various contexts
           original = content
-          content = re.sub(r'\(\s*<\s*(\d+)', r'({"<"}\1', content)
-          content = re.sub(r'\(\s*>\s*(\d+)', r'({">"}\1', content)
+          # In parentheses: (<18, >5, etc.)
+          content = re.sub(r'\((<)(\d+)', r'({"<"}\2', content)
+          content = re.sub(r'\((>)(\d+)', r'({">"}\2', content)
+          # Standalone comparisons in text
+          content = re.sub(r'(\s)>=(\s)', r'\1 ≥ \2', content)
+          content = re.sub(r'(\s)<=(\s)', r'\1 ≤ \2', content)
+          # Generic < and > in text (but not in JSX tags or code)
+          content = re.sub(r'(\s)<(\s)(?![A-Za-z])', r'\1{"<"}\2', content)
+          content = re.sub(r'(\s)>(\s)(?![A-Za-z])', r'\1{">"}\2', content)
           if content != original:
               fixes_made.append("Comparison operators")
+          
+          # Fix malformed escapes
+          original = content
+          # {"->"} followed by stray >
+          content = re.sub(r'\{"->">\}', r' → ', content)
+          content = re.sub(r'\{"->"\}\s*>', r' → ', content)
+          # Multiple consecutive escapes
+          content = re.sub(r'\{"->"}\s*\{"->"}\s*\{"->"}\s*\{"->"}\s*\{"->"}', r' → → → → ', content)
+          content = re.sub(r'(\{"->"}\s*){2,}', lambda m: ' → ' * m.group(0).count('{"->"}'), content)
+          if content != original:
+              fixes_made.append("Malformed escapes")
+          
+          # Final safety pass: catch any stray > or < in JSX text
+          original = content
+          # Find patterns like "text > text" or "text < text" in strings
+          content = re.sub(r'([a-zA-Z])\s+>\s+([a-zA-Z])', r'\1 {">"} \2', content)
+          content = re.sub(r'([a-zA-Z])\s+<\s+([a-zA-Z])', r'\1 {"<"} \2', content)
+          if content != original:
+              fixes_made.append("Stray angle brackets")
           
           with open(filepath, 'w', encoding='utf-8') as f:
               f.write(content)
