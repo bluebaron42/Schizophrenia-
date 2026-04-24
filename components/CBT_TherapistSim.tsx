@@ -321,7 +321,7 @@ const CBT_TherapistSim: React.FC<CBT_TherapistSimProps> = ({ isPresentation }) =
               <div className={`bg-gray-900 p-6 rounded-xl border border-gray-700 max-w-2xl ${isPresentation ? 'text-xl' : 'text-sm'}`}>
                   <p className="text-gray-400">
                       {score >= 4 ? "Excellent work. You successfully navigated the ABCDE model, establishing trust (Engagement) before gently challenging the delusions (Dispute) and helping the patient find Alternative Explanations." 
-                      : "You established some rapport, but may have challenged the patient too early or colluded with their delusions. Remember: Assessment -> Engagement -> ABC -> Normalisation -> Dispute."}
+                      : "You established some rapport, but may have challenged the patient too early or colluded with their delusions. Remember: Assessment → Engagement → ABC → Normalisation → Dispute."}
                   </p>
               </div>
               <button onClick={reset} className={`bg-gray-700 text-white rounded-full font-bold hover:bg-gray-600 ${isPresentation ? 'px-12 py-6 text-2xl' : 'px-8 py-3'}`}>Next Patient</button>
